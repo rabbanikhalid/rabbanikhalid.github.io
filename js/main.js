@@ -232,3 +232,93 @@ window.addEventListener('scroll', () => {
     
     lastScroll = currentScroll;
 });
+
+
+// Subtle magnetic effect for Beyond Code cards
+document.querySelectorAll('.beyond-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        card.style.transform = `translateY(-8px) rotateX(${ -y / 20 }deg) rotateY(${ x / 20 }deg)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+    });
+});
+
+
+const texts = [
+    "Computer Science Student",
+    "Exploring Data Analytics",
+    "Data Science and Machine Learning",
+    "Turning Data into Clarity"
+];
+
+const typingElement = document.getElementById("typing-text");
+
+let textIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+
+function typeEffect() {
+    const currentText = texts[textIndex];
+
+    if (!isDeleting) {
+        typingElement.textContent = currentText.substring(0, charIndex + 1);
+        charIndex++;
+
+        if (charIndex === currentText.length) {
+            setTimeout(() => isDeleting = true, 1500);
+        }
+    } else {
+        typingElement.textContent = currentText.substring(0, charIndex - 1);
+        charIndex--;
+
+        if (charIndex === 0) {
+            isDeleting = false;
+            textIndex = (textIndex + 1) % texts.length;
+        }
+    }
+
+    setTimeout(typeEffect, isDeleting ? 40 : 80);
+}
+
+document.addEventListener("DOMContentLoaded", typeEffect);
+
+
+const avatar = document.querySelector(".hero-avatar");
+
+document.addEventListener("mousemove", (e) => {
+    const x = (window.innerWidth / 2 - e.clientX) / 40;
+    const y = (window.innerHeight / 2 - e.clientY) / 40;
+
+    avatar.style.transform = `
+        translateY(-10px)
+        rotateY(${x}deg)
+        rotateX(${y}deg)
+    `;
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const bubble = document.querySelector(".hero-avatar-bubble");
+
+    if (!bubble) {
+        console.log("Bubble element not found.");
+        return;
+    }
+
+    setTimeout(() => {
+        bubble.classList.add("show");
+    }, 1500);
+
+    setTimeout(() => {
+        bubble.classList.remove("show");
+    }, 4500);
+
+});
+
+

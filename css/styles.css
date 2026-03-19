@@ -124,6 +124,18 @@ body.cursor-hover .cursor-glow {
     .cursor, .cursor-glow { display: none; }
 }
 
+.cursor-blink {
+    margin-left: 4px;
+    animation: blink 1s infinite;
+    color: var(--color-accent);
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+}
+
+
 /* ==========================================
    NAVIGATION
    ========================================== */
@@ -272,15 +284,180 @@ body.cursor-hover .cursor-glow {
     50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
 }
 
+.hero-graph-bg {
+    position: absolute;
+    bottom: 35%;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    z-index: 1;
+    opacity: 0.7;
+    pointer-events: none;
+    animation: graphFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes graphFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-20px); }
+}
+
+.hero-graph-bg polyline {
+    stroke-dasharray: 1500;
+    stroke-dashoffset: 1500;
+    animation: graphDraw 4s ease forwards;
+}
+
+@keyframes graphDraw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+
 .hero-container {
     position: relative;
     z-index: 3;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
+
+.hero-avatar-wrapper {
+    position: absolute;
+    right: 3%;
+    bottom: 8%;
+    width: 350px;
+    pointer-events: none;
+    transform: translateX(120%);
+    animation: avatarSlideIn 1.2s ease-out forwards;
+}
+
+.hero-avatar {
+    width: 100%;
+    max-width: 280px;
+    animation: avatarFloat 4s ease-in-out infinite 1.2s;
+    transition: transform 0.2s ease;
+    filter: drop-shadow(0 0 25px rgba(0, 255, 255, 0.4));
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+@keyframes glow {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(0,255,255,0.3)); }
+    50% { filter: drop-shadow(0 0 35px rgba(0,255,255,0.6)); }
+}
+@keyframes avatarSlideIn {
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Float animation */
+@keyframes avatarFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+}
+
+/* Bubble */
+.hero-avatar-bubble {
+    position: absolute;
+    top: -70px;
+    left: -20px;
+    padding: 12px 20px;
+    font-size: 14px;
+    color: var(--color-accent);
+    background: rgba(6, 182, 212, 0.08);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(6, 182, 212, 0.25);
+    border-radius: 30px;
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.25);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease;
+}
+
+
+.hero-avatar-bubble::before,
+.hero-avatar-bubble::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(6, 182, 212, 0.08);
+    border: 1px solid rgba(6, 182, 212, 0.25);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+}
+
+.hero-avatar-bubble::before {
+    width: 16px;
+    height: 16px;
+    bottom: -10px;
+    left: 30px;
+}
+
+.hero-avatar-bubble::after {
+    width: 10px;
+    height: 10px;
+    bottom: -18px;
+    left: 45px;
+}
+
+
+@keyframes bubbleGlow {
+    0%,100% { box-shadow: 0 0 20px rgba(6,182,212,0.2); }
+    50% { box-shadow: 0 0 35px rgba(6,182,212,0.4); }
+}
+
+/* Visible bubble */
+.hero-avatar-bubble.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mini-chart {
+    position: absolute;
+    left: -60px;
+    bottom: 40px;
+    display: flex;
+    gap: 6px;
+    opacity: 0.5;
+    animation: floatChart 4s ease-in-out infinite;
+}
+
+.mini-chart div {
+    width: 6px;
+    height: 20px;
+    background: #00ffff;
+    box-shadow: 0 0 10px rgba(0,255,255,0.6);
+    animation: barAnim 1.5s infinite ease-in-out;
+}
+
+.mini-chart div:nth-child(2) { height: 30px; animation-delay: .2s; }
+.mini-chart div:nth-child(3) { height: 18px; animation-delay: .4s; }
+.mini-chart div:nth-child(4) { height: 26px; animation-delay: .6s; }
+
+@keyframes barAnim {
+    0%,100% { transform: scaleY(1); }
+    50% { transform: scaleY(1.5); }
+}
+
+@keyframes floatChart {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+
+
+
 
 .hero-content {
     max-width: 900px;
     margin: 0 auto;
+    flex: 1;
 }
 
 .hero-title {
@@ -391,6 +568,9 @@ body.cursor-hover .cursor-glow {
     0%, 100% { transform: translateY(0); opacity: 1; }
     50% { transform: translateY(10px); opacity: 0.5; }
 }
+
+
+
 
 /* ==========================================
    SECTIONS
@@ -634,15 +814,51 @@ body.cursor-hover .cursor-glow {
 
 
 /* ==========================================
-   SKILLS SECTION
+   === SKILL CLOUD REDESIGN ===
    ========================================== */
+
+/* Remove old skill-related styles and replace with these */
+
 .skills {
     background: rgba(15, 23, 42, 0.5);
+    position: relative;
+    overflow: hidden;
 }
+
+.skills-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.2;
+    z-index: 0;
+    pointer-events: none;
+    animation: gridDrift 18s linear infinite;
+}
+
+@keyframes gridDrift {
+    from { background-position: 0 0; }
+    to { background-position: 60px 60px; }
+}
+
 
 .skills-categories {
     display: grid;
     gap: var(--spacing-xl);
+}
+
+@media (min-width: 1024px) {
+    .skills-categories {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .skills-categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .skill-category {
@@ -651,6 +867,7 @@ body.cursor-hover .cursor-glow {
     border-radius: 16px;
     padding: var(--spacing-lg);
     transition: all var(--transition-base);
+    
 }
 
 .skill-category:hover {
@@ -665,6 +882,8 @@ body.cursor-hover .cursor-glow {
     align-items: center;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .category-icon {
@@ -676,6 +895,7 @@ body.cursor-hover .cursor-glow {
     background: rgba(6, 182, 212, 0.1);
     border-radius: 8px;
     color: var(--color-accent);
+    flex-shrink: 0;
 }
 
 .category-title {
@@ -684,62 +904,77 @@ body.cursor-hover .cursor-glow {
     color: var(--color-text-primary);
 }
 
-.skill-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-}
-
-.skill-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-}
-
-.skill-name {
-    font-size: 0.938rem;
-    color: var(--color-text-secondary);
-}
-
-.skill-bar {
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.skill-progress {
-    height: 100%;
-    background: linear-gradient(90deg, var(--color-accent), #3b82f6);
-    border-radius: 3px;
-    width: var(--progress);
-    animation: fill-bar 1.5s ease-out;
-}
-
-@keyframes fill-bar {
-    from { width: 0; }
-}
-
-.skill-tags {
+/* Skill Cloud Layout */
+.skill-cloud {
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-xs);
+    align-items: flex-start;
 }
 
-.skill-tag {
-    padding: var(--spacing-xs) var(--spacing-sm);
+.cloud-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.625rem 1rem;
     font-size: 0.875rem;
+    font-weight: 500;
     color: var(--color-text-secondary);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    transition: all var(--transition-fast);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    backdrop-filter: blur(8px);
+    transition: all var(--transition-base);
+    cursor: default;
+    white-space: nowrap;
 }
 
-.skill-tag:hover {
-    background: rgba(6, 182, 212, 0.1);
-    border-color: var(--color-accent);
+.cloud-tag:hover {
+    transform: translateY(-4px);
+    background: rgba(6, 182, 212, 0.08);
+    border-color: rgba(6, 182, 212, 0.3);
+    color: var(--color-accent);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(6, 182, 212, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .skills-categories {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .skill-category {
+        padding: var(--spacing-md);
+    }
+    
+    .cloud-tag {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.813rem;
+    }
+}
+
+/* Ensure reveal animations still work */
+.skill-category.reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    transition-delay: calc(var(--delay, 0) * 100ms);
+}
+
+.skill-category.reveal-up.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Additional hover effect for category cards */
+.skill-category:hover .category-icon {
+    background: rgba(6, 182, 212, 0.15);
+    transform: scale(1.05);
+}
+
+.skill-category:hover .category-title {
     color: var(--color-accent);
 }
 
@@ -784,10 +1019,33 @@ body.cursor-hover .cursor-glow {
 .project-image {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
-    background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+    height: 220px; /* keep consistent for all cards */
     overflow: hidden;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* THIS is the key */
+    object-position: center;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-image img {
+    transform: scale(1.05);
+}
+
+.project-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(10, 15, 25, 0.6));
+}
+
+
 
 .project-overlay {
     position: absolute;
@@ -887,6 +1145,63 @@ body.cursor-hover .cursor-glow {
     opacity: 0.7;
 }
 
+
+/* ==========================================
+   BEYOND CODE SECTION
+   ========================================== */
+
+.beyond {
+    background: linear-gradient(
+        180deg,
+        rgba(15, 23, 42, 0.4) 0%,
+        transparent 100%
+    );
+}
+
+.beyond-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-2xl);
+}
+
+.beyond-card {
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: var(--spacing-lg);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.beyond-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(6, 182, 212, 0.4);
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.2);
+}
+
+.beyond-emoji {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    transition: transform var(--transition-base);
+}
+
+.beyond-card:hover .beyond-emoji {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.beyond-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    letter-spacing: 0.03em;
+}
+
+
 /* ==========================================
    CONTACT SECTION
    ========================================== */
@@ -964,6 +1279,10 @@ body.cursor-hover .cursor-glow {
     border-radius: 16px;
     padding: var(--spacing-xl);
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .card-glow {
@@ -984,6 +1303,9 @@ body.cursor-hover .cursor-glow {
 .card-content {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .status-indicator {
@@ -1007,7 +1329,7 @@ body.cursor-hover .cursor-glow {
 }
 
 .status-text {
-    font-size: 0.875rem;
+    font-size: 1.2rem;
     font-weight: 500;
     color: var(--color-text-secondary);
 }
