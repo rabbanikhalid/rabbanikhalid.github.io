@@ -28,11 +28,6 @@ This site showcases my projects, skills, and work in a clean and interactive for
 
 ---
 
-## 📷 Preview
-
-![Portfolio Preview](assets/dashboard.png)
-
----
 
 ## 📂 Projects Included
 
@@ -43,11 +38,4 @@ This site showcases my projects, skills, and work in a clean and interactive for
 
 ---
 
-## 📬 Contact
-
-Feel free to connect or reach out!
-
----
-
-⭐ If you like this project, consider giving it a star!
 
